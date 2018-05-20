@@ -1,0 +1,10 @@
+opencv-python==3.4.0
+numpy==1.11.3
+flask==0.12
+beautifulsoup4==4.6.0
+Flask-Login==0.4.1
+Flask-SQLAlchemy==2.3.2
+MySQL-python==1.2.5
+requests==2.18.4
+simplejson==3.13.2
+SQLAlchemy==1.2.2
