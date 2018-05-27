@@ -1,6 +1,5 @@
 #!/bin/bash
 succeed=false
-add_files="*"
 while getopts ":a:m:p:" opt
 do  
     case $opt in  
@@ -21,7 +20,7 @@ done
 pip freeze > requirements.test.txt
 if [ -z $add_files ]
 then
-    git add $add_files
+    git add *
 else
     git add $add_files
 fi
