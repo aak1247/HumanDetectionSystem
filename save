@@ -31,7 +31,7 @@ then
 else
     git commit -m $message && succeed=true
 fi
-if [ $succeed == 'true' && $push == "y" ]
+if [[ $succeed == 'true' && $push == "y" ]]
 then
     git push
 fi
