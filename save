@@ -1,28 +1,37 @@
 #!/bin/bash
-while getopts ":a:m:" opt
+succeed=false
+add_files="*"
+while getopts ":a:m:p:" opt
 do  
     case $opt in  
         a)  
         add_files=$OPTARG
         ;;  
-        m)  
+        m)
         message=$OPTARG
-        ;;  
+        ;;
+        p)
+        push=$OPTARG
+        ;;
         ?) 
         echo "unkwown parameter $opt $OPTARG"  
         exit 1;;  
     esac  
 done
-# pip freeze > requirements.txt
-if [ -z add_files ]
+pip freeze > requirements.test.txt
+if [ -z $add_files ]
 then
-    git add *
+    git add $add_files
 else
     git add $add_files
 fi
-if [ -z message ]
+if [ -z $message ]
 then
-    git commit -m "auto commit"
+    git commit -m "auto commit" && succeed=true
 else
-    git commit -m $message
+    git commit -m $message && succeed=true
+fi
+if [ $succeed == 'true' && $push == "y" ]
+then
+    git push
 fi

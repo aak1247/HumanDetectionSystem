@@ -3,7 +3,7 @@ from server.algorithms.svm import detector
 from server.services.fileService import saveImage
 from server.services.common import allow_cross_domain
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static/build')
 
 
 @app.route('/')
