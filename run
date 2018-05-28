@@ -1,3 +1,29 @@
 #!/bin/bash
-./install && \
+mode='full'
+while getopts ":a:b:f:" opt
+do  
+    case $opt in 
+        a)
+        mode='full'
+        ;; 
+        b)
+        mode='back'
+        ;;  
+        f)
+        mode='front'
+        ;;
+        ?) 
+        echo "unkwown parameter $opt $OPTARG"  
+        exit 1;;  
+    esac  
+done
+if [ $mode == 'full' ]
+then
+./install
+elif [ $mode == 'back' ]
+then
 python app.py
+else
+cd static && \
+npm start
+fi

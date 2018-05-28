@@ -2,6 +2,7 @@ from flask import Flask, request
 from server.algorithms.svm import detector
 from server.services.fileService import saveImage
 from server.services.common import allow_cross_domain
+from server.controller import initController
 
 app = Flask(__name__, static_url_path='', static_folder='static/build')
 
@@ -22,10 +23,12 @@ def detect():
     response = str(rects)
     return response
 
-@app.route('/detect', method=['POST'])
-@allow_cross_domain
-def uploadImag():
-    pass
+# @app.route('/detect', method=['POST'])
+# @allow_cross_domain
+# def uploadImag():
+#     pass
+
+initController(app)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

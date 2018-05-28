@@ -3,7 +3,7 @@ succeed=false
 while getopts ":a:m:p:" opt
 do  
     case $opt in  
-        a)  
+        a)
         add_files=$OPTARG
         ;;  
         m)
