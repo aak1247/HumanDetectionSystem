@@ -8,8 +8,8 @@ hog.setSVMDetector(hog.getDefaultPeopleDetector())
 def detect(img_name):
     resize_scale = 0.8
     img = cv2.imread(img_name)
-    gray = v2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    rects, wei = hog.detectMultiScale(gray, winStride=(4, 4),padding=(8, 8), scale=1.05)
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    rects, wei = hog.detectMultiScale(img, winStride=(4, 4),padding=(8, 8), scale=1.05)
     for i in range(len(rects)):
         (x, y, w, h) = rects[i]
         print("rect before:" + strs(x, "," , y, ",", w, ",", h))

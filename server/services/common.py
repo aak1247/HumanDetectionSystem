@@ -3,13 +3,16 @@ from flask import make_response
 
 
 def allow_cross_domain(fun):
+    print(str(fun))
     @wraps(fun)
     def wrapper_fun(*args, **kwargs):
         rst = make_response(fun(*args, **kwargs))
         rst.headers['Access-Control-Allow-Origin'] = '*'
-        rst.headers['Access-Control-Allow-Methods'] = 'PUT,GET,POST,DELETE,OPTIONS,HEAD'
+        rst.headers['Access-Control-Allow-Methods'] = 'PUT,GET,POST,DELETE,PATCH,HEAD'
+        rst.headers["Access-Control-Allow-Credentials"] = True
         allow_headers = "Referer,Accept,Origin,User-Agent"
         rst.headers['Access-Control-Allow-Headers'] = allow_headers
+        print(str(rst.headers))
         print(str(rst))
         return rst
     return wrapper_fun

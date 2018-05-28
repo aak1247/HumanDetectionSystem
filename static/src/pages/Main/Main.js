@@ -10,16 +10,14 @@ class Main extends Component {
         fetch('http://localhost:5000/detect', {
             method: 'POST',
             mode: 'cors',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/form-data'
-            },
-            credentials: 'include',
-            body: new FormData(document.getElementById('uploadForm')[0])
+            // credentials: 'include',
+            body: new FormData(document.getElementById('uploadForm'))
         })
-        .then(response => response.json())
+        .then(response => console.log(response))
         .then(function (res) {
-            console.log(res)
+        console.log(res)
+        }).catch(err => {
+            debugger
         })
     }
     render() {
@@ -43,11 +41,12 @@ class Main extends Component {
                     <div className="img-detect" onClick={this.detect}>
                         <img src={person} />
                     </div>
-                    <form id="uploadForm" 
-                    encType="multipart/form-data"
-                    action="/detect"
-                    method="post">
+                    <form id="uploadForm"
+                        encType="multipart/form-data"
+                        action="http://127.0.0.1:5000/detect"
+                        method="post">
                         <p>上传</p><input type="file" name="image" />
+                        <input type="submit"/>
                     </form>
                 </div>
                 <div className="footer">

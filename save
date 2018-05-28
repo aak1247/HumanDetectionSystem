@@ -1,6 +1,7 @@
 #!/bin/bash
 succeed=false
-while getopts ":a:m:p:" opt
+push=""
+while getopts ":a:m:p" opt
 do  
     case $opt in  
         a)
@@ -10,7 +11,7 @@ do
         message=$OPTARG
         ;;
         p)
-        push=$OPTARG
+        push="y"
         ;;
         ?) 
         echo "unkwown parameter $opt $OPTARG"  

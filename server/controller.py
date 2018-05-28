@@ -7,4 +7,3 @@ def initController(app):
         def post(self):
             return {'status': 'success'}
     api.add_resource(CreateUser, '/CreateUser')
-    
