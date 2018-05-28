@@ -7,6 +7,7 @@ app = Flask(__name__, static_url_path='', static_folder='static/build')
 
 
 @app.route('/')
+@allow_cross_domain
 def hello_world():
     return 'Hello World!'
 
@@ -20,6 +21,11 @@ def detect():
     rects = detector.detect(img_name)
     response = str(rects)
     return response
+
+@app.route('/detect', method=['POST'])
+@allow_cross_domain
+def uploadImag():
+    pass
 
 if __name__ == '__main__':
     app.run()
