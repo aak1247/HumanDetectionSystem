@@ -51,3 +51,8 @@ def detectImg(img):
         rects[i] = (x, y, w, h)
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
     return rects
+
+def retrain(samples, preId="pre", nextId="cur"):
+    pre = hog
+    hog.save(preId + '.bin')
+    
