@@ -22,7 +22,7 @@ then
 ./install
 elif [ $mode == 'back' ]
 then
-python app.py
+python run.py
 else
 cd static && \
 npm start
