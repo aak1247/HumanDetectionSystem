@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, abort, session
 from ..algorithms.svm import detector
 from ..services.fileService import saveImage
 from ..services.network import allow_cross_domain
@@ -6,7 +6,6 @@ from ..models.transfer import BaseRtn, Rtn
 from ..services.common import jsonify, parserJson
 from ..app import app, db
 import json
-
 
 @app.route('/hello', methods=['POST', 'GET'])
 @allow_cross_domain
@@ -22,77 +21,40 @@ def detect():
     # img = saveImage(img)
     img.save(img_name)
     rects = detector.detect(img_name)
-    response = str(rects)
-    res = jsonify(response)
+    rtn = str(rects)
+    res = jsonify(rtn)
     return res, 200
 
-@app.route('/login', methods=['POST'])
-@allow_cross_domain
-def login():
-    from server.model import User
-    data = request.get_data()
-    json_obj = parserJson(data)
-    username = json_obj['username']
-    password = json_obj['username']
-    user = User(username, password)
-    user_found = User.query.filter_by(username=username).first()
-    print(str(user_found))
-    json_obj = jsonify({
-        "username": username,
-        "password": password
-    })
-    if(user_found.password == user.password):
-        print("login success@" + str(user_found.username))
-        res = make_response(json_obj)
-        res.set_cookie('username', username)
-        return res, 200
-    else:
-        print("login failed")
-        return jsonify({
-            "status": "400"
-        })
-    return jsonify(user), 200
-
-@app.route('/register', methods=['POST'])
-@allow_cross_domain
-def register():
-    from server.model import User
-    data = request.get_data()
-    json_obj = parserJson(data)
-    username = json_obj['username']
-    password = json_obj['password']
-    user = User(username, password)
-    try:
-        db.session.add(user)
-        db.session.commit()
-        rtn = Rtn(**parserJson(str(user)))
-    except Exception as e:
-        rtn = BaseRtn(code = -1, message = "register failed")
-    return jsonify(rtn), 200
 
 @app.errorhandler(400)
 @allow_cross_domain
 def handle400(err):
-    response = dict(status=0, message="400 Bad Request")
-    return jsonify(response), 400
+    rtn = dict(code = 0, message = "400 Bad Request")
+    return jsonify(rtn), 400
 
 @app.errorhandler(404)
 @allow_cross_domain
 def handle404(err):
-    response = dict(status=0, message="404 Not Found")
-    return jsonify(response), 404
+    rtn = BaseRtn(code = 0, message = "404 Not Found")
+    return jsonify(rtn), 404
 
 @app.errorhandler(405)
 @allow_cross_domain
 def handle405(err):
-    response = dict(status=0, message="405 Method Not Supported")
-    return jsonify(response), 405
+    rtn = BaseRtn(code = 0, message = "405 Method Not Supported")
+    return jsonify(rtn), 405
 
 @app.errorhandler(500)
 @allow_cross_domain
 def handle500(err):
-    response = dict(status=0, message="500 Internal Server Error")
-    return jsonify(response), 500
+    rtn = BaseRtn(code = 0, message = "500 Internal Server Error")
+    return jsonify(rtn), 500
+
+@app.errorhandler(403)
+@allow_cross_domain
+def handle403(err):
+    rtn = BaseRtn(code = 0, message = "403 no access")
+    return jsonify(rtn), 403
 # @app.route('/detect', method=['POST'])
 # @allow_cross_domain
 # def uploadImag():
