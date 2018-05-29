@@ -1,24 +1,21 @@
-from functools import wraps
-from flask import make_response
-
-
-def allow_cross_domain(fun):
-    print(str(fun))
-    @wraps(fun)
-    def wrapper_fun(*args, **kwargs):
-        rst = make_response(fun(*args, **kwargs))
-        rst.headers['Access-Control-Allow-Origin'] = '*'
-        rst.headers['Access-Control-Allow-Methods'] = 'PUT,GET,POST,DELETE,PATCH,HEAD'
-        rst.headers["Access-Control-Allow-Credentials"] = True
-        allow_headers = "Referer,Accept,Origin,User-Agent"
-        rst.headers['Access-Control-Allow-Headers'] = allow_headers
-        print(str(rst.headers))
-        print(str(rst))
-        return rst
-    return wrapper_fun
+from flask import jsonify
 
 def strs(*input):
     x = ''
     for i in input:
         x = x + str(i)
     return x
+
+native_jsonify = jsonify
+
+def my_json(obj):
+    try:
+        json_obj = native_jsonify(obj)
+    except:
+        try:
+            json_obj = native_jsonify(obj.__dict__())
+        except:
+            print("went wrong")
+            json_obj = native_jsonify({"code": -1, "message": "parser error"})
+    return json_obj
+jsonify = my_json

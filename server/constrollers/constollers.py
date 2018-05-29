@@ -1,17 +1,18 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, make_response
 from ..algorithms.svm import detector
 from ..services.fileService import saveImage
-from ..services.common import allow_cross_domain
+from ..services.network import allow_cross_domain
+from ..models.transfer import BaseRtn, Rtn
+from ..services.common import jsonify
 from ..app import app, db
 import json
-
-
 
 
 @app.route('/hello', methods=['POST', 'GET'])
 @allow_cross_domain
 def hello_world():
-    return "hello world"
+    rtn = BaseRtn()
+    return jsonify(rtn), 200
 
 @app.route('/detect', methods=['POST'])
 @allow_cross_domain
@@ -23,7 +24,7 @@ def detect():
     rects = detector.detect(img_name)
     response = str(rects)
     res = jsonify(response)
-    return res
+    return res, 200
 
 @app.route('/login', methods=['POST'])
 @allow_cross_domain
@@ -34,7 +35,23 @@ def login():
     username = json_obj['username']
     password = json_obj['username']
     user = User(username, password)
-    return jsonify(user)
+    user_found = User.query.filter_by(username=username).first()
+    print(str(user_found))
+    json_obj = jsonify({
+        "username": username,
+        "password": password
+    })
+    if(user_found.password == user.password):
+        print("login success@" + str(user_found.username))
+        res = make_response(json_obj)
+        res.set_cookie('username', username)
+        return res, 200
+    else:
+        print("login failed")
+        return jsonify({
+            "status": "400"
+        })
+    return jsonify(user), 200
 
 @app.route('/register', methods=['POST'])
 @allow_cross_domain
@@ -47,17 +64,27 @@ def register():
     user = User(username, password)
     db.session.add(user)
     db.session.commit()
-    return jsonify(user)
+    return jsonify(user), 200
 
 @app.errorhandler(400)
 @allow_cross_domain
-def handle400():
-    pass
+def handle400(err):
+    response = dict(status=0, message="400 Bad Request")
+    return jsonify(response), 400
 
+@app.errorhandler(404)
+@allow_cross_domain
+def handle404(err):
+    response = dict(status=0, message="404 Not Found")
+    return jsonify(response), 404
 
+@app.errorhandler(405)
+@allow_cross_domain
+def handle405(err):
+    response = dict(status=0, message="405 Method Not Supported")
+    return jsonify(response), 405
 # @app.route('/detect', method=['POST'])
 # @allow_cross_domain
 # def uploadImag():
 #     pass
 
-# initController(app)
