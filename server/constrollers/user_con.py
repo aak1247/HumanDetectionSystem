@@ -1,4 +1,5 @@
 from flask import Flask, request, make_response, abort, session
+from functools import wraps
 from ..algorithms.svm import detector
 from ..services.fileService import saveImage
 from ..services.network import allow_cross_domain
@@ -10,9 +11,13 @@ import json
 
 # 用户管理部分
 
-def check_auth(session):
-    if not "username" in session:
-        abort(403)
+def check_auth(func):
+    @wraps(func)
+    def wrapper(*args, **kw):
+        if not "username" in session:
+            abort(403)
+        return func(*args, **kw)
+    return wrapper
 
 @app.route('/user/signIn', methods=['POST'])
 @allow_cross_domain
@@ -50,15 +55,33 @@ def register():
 
 @app.route("/user/signIn", methods = ['DELETE'])
 @allow_cross_domain
+@check_auth
 def signOut():
-    check_auth(session)
     session.pop("username")
     resp = jsonify(BaseRtn())
     return resp
 
 @app.route("/user", methods = ['GET'])
+@allow_cross_domain
+@check_auth
 def getInfo():
-    check_auth(session)
     username = session['username']
     user = User.query.filter_by(username = username).first()
     return jsonify(Rtn(**parserJson(str(user))))
+
+@app.route("/user", methods = ['PUT'])
+@allow_cross_domain
+@check_auth
+def changeInfo():
+    data = request.get_data()
+    json_obj = parserJson(data)
+    username = json_obj['username']
+    password = json_obj['password']
+    user = User.query.filter_by(username = username).first()
+    try:
+        user.password = password
+        db.session.commit()
+    except:
+        print("user info update failed")
+    rtn = Rtn(**parserJson(str(user)))
+    return jsonify(rtn), 200
