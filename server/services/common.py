@@ -11,6 +11,7 @@ def strs(*input):
 native_jsonify = jsonify
 
 def my_json(obj):
+    print("obj" +str(obj))
     try:
         json_obj = native_jsonify(obj)
     except Exception as e:
@@ -26,13 +27,18 @@ def my_json(obj):
             except Exception as e:
                 # print(str(type(e)))
                 print("went wrong")
+                print(str(obj))
                 json_obj = native_jsonify({"code": -1, "message": "parser error"})
+    print("json" +str(json_obj))
     return json_obj
 
 def parserJson(strObj):
     try:
         dict_obj = decodeJSON(strObj)
     except:
+        print(strObj)
+        print("tr:" + strObj.translate(str.maketrans("\"\'","\'\"")))
         dict_obj = decodeJSON(strObj.translate(str.maketrans("\"\'","\'\"")))
-        
+    return dict_obj
+
 jsonify = my_json

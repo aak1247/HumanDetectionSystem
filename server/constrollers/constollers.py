@@ -3,7 +3,7 @@ from ..algorithms.svm import detector
 from ..services.fileService import saveImage
 from ..services.network import allow_cross_domain
 from ..models.transfer import BaseRtn, Rtn
-from ..services.common import jsonify
+from ..services.common import jsonify, parserJson
 from ..app import app, db
 import json
 
@@ -31,7 +31,7 @@ def detect():
 def login():
     from server.model import User
     data = request.get_data()
-    json_obj = json.loads(data)
+    json_obj = parserJson(data)
     username = json_obj['username']
     password = json_obj['username']
     user = User(username, password)
@@ -58,14 +58,17 @@ def login():
 def register():
     from server.model import User
     data = request.get_data()
-    json_obj = json.loads(data)
+    json_obj = parserJson(data)
     username = json_obj['username']
-    password = json_obj['username']
+    password = json_obj['password']
     user = User(username, password)
-    # db.session.add(user)
-    # db.session.commit()
-    print(user.id)
-    return jsonify(user), 200
+    try:
+        db.session.add(user)
+        db.session.commit()
+        rtn = Rtn(**parserJson(str(user)))
+    except Exception as e:
+        rtn = BaseRtn(code = -1, message = "register failed")
+    return jsonify(rtn), 200
 
 @app.errorhandler(400)
 @allow_cross_domain

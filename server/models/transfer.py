@@ -15,20 +15,20 @@ class BaseRtn():
 
 class Rtn(BaseRtn):
     def __init__(self, code = 0, message = "OK", **kw):
-        BaseRtn.__init__(self, code, message)
+        BaseRtn.__init__(self, code = code, message = message)
         self.extra = kw
     
     def __dict__(self):
         rtn = dict()
         for k in self.extra:
-            rtn[k] = str(self.extra[k])
+            print(str(k))
+            rtn[k] = self.extra[k]
         rtn['code'] = str(self.code)
-        rtn['message'] = str(self.message)
+        rtn['message'] = self.message
+        return rtn
 
     def __str__(self):
-        # rtn = self.extra.copy()
-        rtn = self.__dict__()
-        return str(rtn)
+        return str(self.__dict__())
 
 
 
