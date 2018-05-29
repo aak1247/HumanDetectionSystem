@@ -62,8 +62,9 @@ def register():
     username = json_obj['username']
     password = json_obj['username']
     user = User(username, password)
-    db.session.add(user)
-    db.session.commit()
+    # db.session.add(user)
+    # db.session.commit()
+    print(user.id)
     return jsonify(user), 200
 
 @app.errorhandler(400)
@@ -83,6 +84,12 @@ def handle404(err):
 def handle405(err):
     response = dict(status=0, message="405 Method Not Supported")
     return jsonify(response), 405
+
+@app.errorhandler(500)
+@allow_cross_domain
+def handle500(err):
+    response = dict(status=0, message="500 Internal Server Error")
+    return jsonify(response), 500
 # @app.route('/detect', method=['POST'])
 # @allow_cross_domain
 # def uploadImag():
