@@ -54,4 +54,3 @@ def retrain(samples, preId="pre", nextId="cur"):
     pre = hog
     hog.save("../data/svm/" + preId + '.yaml')
     
-print(__name__)

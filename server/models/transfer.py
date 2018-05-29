@@ -21,7 +21,6 @@ class Rtn(BaseRtn):
     def __dict__(self):
         rtn = dict()
         for k in self.extra:
-            print(str(k))
             rtn[k] = self.extra[k]
         rtn['code'] = str(self.code)
         rtn['message'] = self.message

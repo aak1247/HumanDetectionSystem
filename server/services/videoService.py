@@ -18,16 +18,22 @@ def detectVideo(video_name):
             break
     cap.release()
 
-def videoDetectTest(video_path):
+def videoDetect(video_path):
+    faces = []
+    counts = []
+    max = 0
+    interval = 0
     videoCapture = cv2.VideoCapture(video_path)
     while(True):
         ret, frame = videoCapture.read()
         cv2.resize(frame, (64, 128))
         rects, wei = detector.detectMultiScale(frame, winStride=(4, 4),padding=(8, 8), scale=1.05)
-        if len(rects):
-            for (x, y, w, h) in rects:
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
-            cv2.imwrite("./data/" + str(uuid.uuid1()) +".jpg", frame)
+        counts.append(len(rects))
+        faces.append(rects)
+        if len(rects) > max:
+            max = len(rects)
+            # for (x, y, w, h) in rects:
+            #     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     videoCapture.release()

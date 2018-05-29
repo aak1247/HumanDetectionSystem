@@ -29,7 +29,7 @@ def my_json(obj):
                 json_obj = native_jsonify({"code": -1, "message": "parser error"})
     return json_obj
 
-def parserJson(strObj):
+def parseJson(strObj):
     try:
         dict_obj = decodeJSON(strObj)
     except:

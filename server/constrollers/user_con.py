@@ -4,9 +4,9 @@ from ..algorithms.svm import detector
 from ..services.fileService import saveImage
 from ..services.network import allow_cross_domain
 from ..models.transfer import BaseRtn, Rtn
-from ..services.common import jsonify, parserJson
+from ..services.common import jsonify, parseJson
 from ..app import app, db
-from server.model import User
+from server.models.pers import User
 import json
 
 # 用户管理部分
@@ -14,7 +14,7 @@ import json
 def check_auth(func):
     @wraps(func)
     def wrapper(*args, **kw):
-        if not "username" in session:
+        if not "userId" in session:
             abort(403)
         return func(*args, **kw)
     return wrapper
@@ -23,7 +23,7 @@ def check_auth(func):
 @allow_cross_domain
 def login():
     data = request.get_data()
-    json_obj = parserJson(data)
+    json_obj = parseJson(data)
     username = json_obj['username']
     password = json_obj['password']
     user = User(username, password)
@@ -31,7 +31,7 @@ def login():
     if(user_found.password == user.password):
         rtn = BaseRtn()
         res = jsonify(rtn)
-        session["username"] = user.username
+        session["userId"] = user_found.id
         return res, 200
     else:
         rtn = BaseRtn(code = -1, message = "login failed")
@@ -41,14 +41,14 @@ def login():
 @allow_cross_domain
 def register():
     data = request.get_data()
-    json_obj = parserJson(data)
+    json_obj = parseJson(data)
     username = json_obj['username']
     password = json_obj['password']
     user = User(username, password)
     try:
         db.session.add(user)
         db.session.commit()
-        rtn = Rtn(**parserJson(str(user)))
+        rtn = Rtn(**parseJson(str(user)))
     except Exception as e:
         rtn = BaseRtn(code = -1, message = "register failed")
     return jsonify(rtn), 200
@@ -57,7 +57,7 @@ def register():
 @allow_cross_domain
 @check_auth
 def signOut():
-    session.pop("username")
+    session.pop("userId", None)
     resp = jsonify(BaseRtn())
     return resp
 
@@ -65,16 +65,16 @@ def signOut():
 @allow_cross_domain
 @check_auth
 def getInfo():
-    username = session['username']
-    user = User.query.filter_by(username = username).first()
-    return jsonify(Rtn(**parserJson(str(user))))
+    user_id = session['userId']
+    user = User.query.filter_by(id=user_id).first()
+    return jsonify(Rtn(**parseJson(str(user))))
 
 @app.route("/user", methods = ['PUT'])
 @allow_cross_domain
 @check_auth
 def changeInfo():
     data = request.get_data()
-    json_obj = parserJson(data)
+    json_obj = parseJson(data)
     username = json_obj['username']
     password = json_obj['password']
     user = User.query.filter_by(username = username).first()
@@ -83,5 +83,5 @@ def changeInfo():
         db.session.commit()
     except:
         print("user info update failed")
-    rtn = Rtn(**parserJson(str(user)))
+    rtn = Rtn(**parseJson(str(user)))
     return jsonify(rtn), 200
