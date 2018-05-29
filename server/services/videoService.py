@@ -37,3 +37,9 @@ def videoDetect(video_path):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     videoCapture.release()
+    return {
+            "faces": faces,
+            "counts": counts,
+            "max": max,
+            "interval": interval
+            }

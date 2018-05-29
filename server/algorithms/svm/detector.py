@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from server.services.common import strs
+# from server.services.common import strs
 
 # hog = cv2.HOGDescriptor()
 # hog.setSVMDetector(hog.getDefaultPeopleDetector())
@@ -8,6 +8,13 @@ from server.services.common import strs
 hog = cv2.HOGDescriptor()
 # hog.setSVMDetector(hog.getDefaultPeopleDetector())
 hog.load('test.bin')
+
+
+def strs(*input):
+    x = ''
+    for i in input:
+        x = x + str(i)
+    return x
 
 def detect(img_name):
     resize_scale = 0.8
