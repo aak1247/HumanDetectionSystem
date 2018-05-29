@@ -13,7 +13,12 @@ class User(db.Model):
         self.password = password
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return str({
+            "id": str(self.id),
+            "username": str(self.username),
+            "password": str(self.password)
+        })
+
 
     def __str__(self):
         return str({
@@ -42,7 +47,11 @@ class Image(db.Model):
         self.state = "0"
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return str({
+            "id": self.id,
+            "name": self.name,
+            "state": self.state
+        })
 
     def __str__(self):
         return str({
@@ -89,15 +98,33 @@ class Job(db.Model):
     __tablename__ = 'jobs'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.String(32), primary_key = True)
+    video_id = db.Column(db.String(32), db.ForeignKey("video.id"))
+    state = db.Column(db.String(1))
     def __repr__(self):
         return '<User %r>' % self.username
 
-class Resource(db.Model):
-    __tablename__ = 'resources'
+class Videos(db.Model):
+    __tablename__ = 'videos'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.String(32), primary_key = True)
-    username = db.Column(db.String(80), unique = True)
-    password = db.Column(db.String(32), nullable = False)
+    name = db.Column(db.String(32))
+    state = db.Column(db.String(1))
+    def __init__(self, name):
+        self.id = uuid.uuid1().hex
+        self.name = name
+        self.state = "0"
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return str({
+            "id": self.id,
+            "name": self.name,
+            "state": self.state
+        })
+
+
+    def __str__(self):
+        return str({
+            "id": self.id,
+            "name": self.name,
+            "state": self.state
+        })

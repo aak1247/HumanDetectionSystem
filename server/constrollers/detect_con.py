@@ -43,6 +43,9 @@ def AnalysisVideo():
     data = request.get_data()
     json_obj = jsonify(data)
     video_id = json_obj['videoId']
+    # 创建job
+
+    # 返回jobid
     return jsonify(BaseRtn()), 200
 
 def AnalysisRepo():
