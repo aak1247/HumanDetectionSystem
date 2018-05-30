@@ -14,17 +14,17 @@ def my_json(obj):
     try:
         json_obj = native_jsonify(obj)
     except Exception as e:
-        # print(str(type(e)))
+        print(str(e))
         try:
             json_obj = native_jsonify(obj.__dict__())
         except Exception as e:
-            # print(str(type(e)))
+            print(str(e))
             try:
                 temp_str = str(obj)
                 temp_str = temp_str.translate(str.maketrans("\"\'","\'\""))
                 json_obj = native_jsonify(decodeJSON(temp_str))
             except Exception as e:
-                # print(str(type(e)))
+                print(str(e))
                 print("went wrong")
                 json_obj = native_jsonify({"code": -1, "message": "parser error"})
     return json_obj

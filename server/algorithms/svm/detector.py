@@ -6,8 +6,8 @@ import numpy as np
 # hog.setSVMDetector(hog.getDefaultPeopleDetector())
 
 hog = cv2.HOGDescriptor()
-# hog.setSVMDetector(hog.getDefaultPeopleDetector())
-hog.load('test.bin')
+hog.setSVMDetector(hog.getDefaultPeopleDetector())
+# hog.load('test.bin')
 
 
 def strs(*input):

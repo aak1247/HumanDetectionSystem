@@ -26,8 +26,10 @@ def detectImg():
     img_path = os.path.join(IMG_DIR, img.id + "." + getExt(img.name))
     faces = detector.detect(img_path)
     img_file = open(img_path, 'rb')
-    out = BytesIO()
-    # img_file.readinto(out)
+    if isinstance(faces, tuple):
+        faces = []
+    else:
+        faces = faces.tolist()
     rtn = {
         "faces": faces,
         "image": u"data:image/png;base64," + base64.b64encode(img_file.read()).decode('ascii')

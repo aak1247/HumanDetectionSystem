@@ -18,16 +18,13 @@ import os
 @allow_cross_domain
 @check_auth
 def uploadImg():
-    print("-1")
     img = request.files['image']
     img_name = request.form['name']
-    print("-1")
     if len(img_name) == 0:
         img_name = "未命名"
     while(1):
         try:
             img_name = fillImgExt(img_name)
-            print("-1")
             img_obj = Image(img_name)
             db.session.add(img_obj)
             db.session.commit()
