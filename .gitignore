@@ -110,6 +110,9 @@ venv.bak/
 .vscode
 
 # img
-*.jpg
-*.png
-*.bmp
+/server/data/images
+/server/data/videos
+upload.jpg
+
+# media
+*.avi
