@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
-from ..server.services.network import MyResponse
+from .services.network import MyResponse
 
 app = Flask(__name__, static_url_path='', static_folder='static/build')
 app.config['DEBUG'] = True

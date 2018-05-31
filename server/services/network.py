@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import make_response, request
+from flask import make_response, request, Response
 from werkzeug.datastructures import Headers
 
 

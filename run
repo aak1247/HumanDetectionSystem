@@ -1,5 +1,11 @@
 #!/bin/bash
 mode='full'
+killall(){
+    echo "运行终止"
+    kill -9 $pid
+}
+trap 'killall' INT
+net start mysql
 while getopts ":abf" opt
 do  
     case $opt in 
@@ -19,7 +25,11 @@ do
 done
 if [ $mode == 'full' ]
 then
-./install
+# ./install
+python run.py&
+pid=$!
+cd static && \
+npm start
 elif [ $mode == 'back' ]
 then
 python run.py
