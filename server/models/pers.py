@@ -94,15 +94,6 @@ repo_images = db.Table('repo_imgs',
 )
 
 
-class Job(db.Model):
-    __tablename__ = 'jobs'
-    __table_args__ = {'extend_existing': True}
-    id = db.Column(db.String(32), primary_key = True)
-    video_id = db.Column(db.String(32), db.ForeignKey("video.id"))
-    state = db.Column(db.String(1))
-    def __repr__(self):
-        return '<User %r>' % self.username
-
 class Videos(db.Model):
     __tablename__ = 'videos'
     __table_args__ = {'extend_existing': True}
@@ -121,10 +112,18 @@ class Videos(db.Model):
             "state": self.state
         })
 
-
     def __str__(self):
         return str({
             "id": self.id,
             "name": self.name,
             "state": self.state
         })
+
+class Job(db.Model):
+    __tablename__ = 'jobs'
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.String(32), primary_key = True)
+    video_id = db.Column(db.String(32), db.ForeignKey("videos.id"))
+    state = db.Column(db.String(1))
+    def __repr__(self):
+        return '<User %r>' % self.username
