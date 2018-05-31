@@ -44,13 +44,6 @@ function get(url) {
     return result;
 }
 
-function detect() {
-
-}
-
-function upload() {
-
-}
 
 function login(user) {
     return fetch(server_url + "/user/signIn", {
@@ -61,8 +54,21 @@ function login(user) {
     })
 }
 
-function logout() {
+function getUser() {
+    return fetch(server_url + "/user", {
+        method: 'GET',
+        mode: 'cors',
+        credentials: "include"
+    })
+}
 
+function logout() {
+    return fetch(server_url + "/user/signIn", {
+        method: 'DELETE',
+        mode: 'cors',
+        body: JSON.stringify({}),
+        credentials: "include"
+    })
 }
 
 function register(user) {
@@ -95,4 +101,4 @@ function detect(imageId) {
     })
 }
 
-export { post, get, register, login, upload, detect }
+export { post, get, register, login, upload, detect, logout, getUser }

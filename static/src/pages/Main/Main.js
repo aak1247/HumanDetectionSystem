@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import "./Main.css"
-import person from "../../images/person.jpg"
-import { upload, detect } from "../../services/network"
-
+import "./Main.scss";
+import person from "../../images/user.jpg";
+import { upload, detect } from "../../services/network";
+// import { async } from "../../services/async_network";
+import Gravity from '../../components/gravity/gravity';
+import Starsky from '../../components/starsky/starsky.js';
+import FontAwesome from 'react-fontawesome';
 
 
 
@@ -16,50 +19,24 @@ class Main extends Component {
             detected: false
         }
     }
-    // detect() {
-    //     fetch('http://localhost:5000/detect', {
-    //         method: 'POST',
-    //         mode: 'cors',
-    //         body: new FormData(document.getElementById('uploadForm'))
-    //     })
-    //         .then(response => console.log(response))
-    //         .then(function (res) {
-    //             console.log(res)
-    //         }).catch(err => {
-    //             debugger
-    //         })
-    // }
     detectFaces = () => {
         let formData = new FormData(document.getElementById('uploadForm'))
         let req = upload(formData);
-        req
-            .then(
-            res => {
-                res.json()
-                    .then(
-                    json => {
-                        let imageId = json.id;
-                        this.setState({imageId: imageId})
-                        let req2 = detect(imageId);
-                        req2
-                            .then(
-                            res2 => {
-                                res2.json()
-                                    .then(
-                                    json2 => {
-                                        this.setState({
-                                            detected: true,
-                                            img: json2.image,
-                                            faces: json2.faces
-                                        })
-                                    }
-                                    )
-                            }
-                            )
-                    }
-                    )
-            }
-            )
+        req.then(res => res.json())
+            .then(json => {
+                this.setState({
+                    imageId: json.id
+                });
+                return detect(json.id);
+            })
+            .then(res => res.json())
+            .then(json => {
+                this.setState({
+                    detected: true,
+                    img: json.image,
+                    faces: json.faces
+                })
+            }).catch(e => console.error(e));
     }
 
     render() {
@@ -71,12 +48,12 @@ class Main extends Component {
             <div className="main">
                 <div className="img-detect" onClick={this.detectFaces}>
                     {
-                        this.state.detected?
-                        <img src={this.state.img} />
-                        :<img src={person} />
+                        this.state.detected ?
+                            <img src={this.state.img} />
+                            : <img src={person} />
                     }
-                    
                 </div>
+                <FontAwesome name="times" />
                 <form id="uploadForm"
                     encType="multipart/form-data"
                     action="http://127.0.0.1:5000/detect"
@@ -85,6 +62,7 @@ class Main extends Component {
                     <input type="text" name="name" />
                     <input type="submit" />
                 </form>
+                <Starsky />
             </div>
         );
     }

@@ -7,6 +7,12 @@ from ..services.common import jsonify, parseJson
 from ..app import app, db
 import json
 
+@app.route('/*', methods=['OPTIONS'])
+@allow_cross_domain
+def options():
+    print("potion")
+    return jsonify(BaseRtn()), 200
+
 @app.route('/hello', methods=['POST', 'GET'])
 @allow_cross_domain
 def hello_world():

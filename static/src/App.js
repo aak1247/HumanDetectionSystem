@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import Main from "./pages/Main/Main"
 import Register from "./pages/Register/Register"
 import Login from "./pages/Login/Login"
 import FontAwesome from 'react-fontawesome';
+import Header from './components/header/header'
+var net = require("./services/network")
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +16,37 @@ class App extends Component {
       loging: false,
       registering: true
     }
+  }
 
+  componentWillMount() {
+    //查询是否已登录
+    net.getUser()
+      .then(ret => ret.json())
+      .then(json => {
+        console.log(json);
+        if (json.code == 0) {
+          this.setState({
+            hasLogin: true,
+            registering: false
+          })
+        }
+      })
+      .catch(e => console.log(e))
+  }
+
+  logOutHandler = () => {
+    net.logout()
+    .then(res => res.json())
+    .then(json => {
+      if (json.code == 0) {
+        this.setState({
+          hasLogin: false,
+          loging: true
+        })
+      } else {
+        alert("登出失败，请稍后再试");
+      }
+    }).catch(e => console.error(e));
   }
 
   goToLogin = () => {
@@ -51,10 +83,7 @@ class App extends Component {
     //注册
     return (
       <div className="all">
-        <div className="header">
-          <FontAwesome name='bars' />
-          <span>在线人体检测系统</span>
-        </div>
+        <Header logOutHandler={this.logOutHandler}/>
         <div className="body">
           {(() => {
             if (!this.state.hasLogin && this.state.registering) {

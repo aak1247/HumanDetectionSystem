@@ -52,27 +52,24 @@ class Login extends Component {
                 password: this.state.password
             }
             let res = login(user)
-            res.then(
-                res => {
-                    res.json()
-                        .then(
-                        json => {
-                            if (json.code === 0) {
-                                this.setState({
-                                    loginFail: false
-                                })
-                                handleNext()
-                            }
-                            else {
-                                this.setState({
-                                    loginFail: true
-                                })
-                            }
+            res.then(res => res.json())
+                .then(
+                json => {
+                    if (json.code === 0) {
+                        this.setState({
+                            loginFail: false
                         })
-                }
-            ).catch(e => {
-                console.log(e)
-            })
+                        handleNext()
+                    }
+                    else {
+                        this.setState({
+                            loginFail: true
+                        })
+                    }
+                })
+                .catch(e => {
+                    console.log(e)
+                })
         }
         return (
             <div className="login">
@@ -107,9 +104,10 @@ class Login extends Component {
                                 type="password"
                                 autoComplete="current-password"
                                 margin="normal"
-                                onChange={(e)=>{
-                                    this.setState({loginFail: false})
-                                    this.handleChange('password')}}
+                                onChange={(e) => {
+                                    this.setState({ loginFail: false })
+                                    this.handleChange('password')
+                                }}
                             />
                     }
                     <Button variant="raised"
