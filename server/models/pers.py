@@ -7,10 +7,12 @@ class User(db.Model):
     id = db.Column(db.String(32), primary_key = True)
     username = db.Column(db.String(64), unique = True)
     password = db.Column(db.String(64), nullable = False)
-    def __init__(self, username, password):
+    role = db.Column(db.String(1), nullable = False)
+    def __init__(self, username, password, role = '0'):
         self.id = uuid.uuid1().hex
         self.username = username
         self.password = password
+        self.role = '0'
 
     def __repr__(self):
         return str({
