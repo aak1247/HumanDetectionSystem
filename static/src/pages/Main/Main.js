@@ -6,6 +6,7 @@ import { upload, detect } from "../../services/network";
 import Gravity from '../../components/gravity/gravity';
 import Starsky from '../../components/starsky/starsky.js';
 import FontAwesome from 'react-fontawesome';
+import Button from '@material-ui/core/Button';
 
 
 
@@ -24,18 +25,25 @@ class Main extends Component {
         let req = upload(formData);
         req.then(res => res.json())
             .then(json => {
-                this.setState({
-                    imageId: json.id
-                });
-                return detect(json.id);
+                if (json.code == '0') {
+                    this.setState({
+                        imageId: json.id
+                    });
+                    return detect(json.id);
+                }
+                else {
+                    return Promise.reject(new Error('upload failed'))
+                }
             })
             .then(res => res.json())
             .then(json => {
-                this.setState({
-                    detected: true,
-                    img: json.image,
-                    faces: json.faces
-                })
+                if (json.code == '0') {
+                    this.setState({
+                        detected: true,
+                        img: json.image,
+                        faces: json.faces
+                    })
+                }
             }).catch(e => console.error(e));
     }
 
@@ -49,20 +57,43 @@ class Main extends Component {
                 <div className="img-detect" onClick={this.detectFaces}>
                     {
                         this.state.detected ?
-                            <img src={this.state.img} />
-                            : <img src={person} />
+                            <img src={this.state.img} className='detect-img' />
+                            : <img src={person} className='detect-img' />
                     }
+                    <Button variant="raised"
+                        color="primary"
+                        className='uploadButton'
+                        onClick={e => {
+                            e.stopPropagation();
+                            document.getElementById('uploadFile').click();
+                        }}>
+                        选择图片
+                    </Button>
+                    <FontAwesome name="times"
+                        className='closeModel'
+                        onClick={e => {
+                            e.stopPropagation();
+                            document.getElementsByClassName('detect-img')[0].src = person;
+                        }} />
                 </div>
-                <FontAwesome name="times" />
                 <form id="uploadForm"
                     encType="multipart/form-data"
                     action="http://127.0.0.1:5000/detect"
                     method="post">
-                    <p>上传</p><input type="file" name="image" />
-                    <input type="text" name="name" />
-                    <input type="submit" />
+                    <p>上传</p>
+                    <input type="file"
+                        name="image"
+                        id='uploadFile'
+                        onChange={e => {
+                            var reader = new FileReader();
+                            reader.readAsDataURL(document.getElementById("uploadFile").files[0]);
+                            reader.onload = function (e) {
+                                document.getElementsByClassName('detect-img')[0].src = e.target.result;
+                            }
+                        }} />
+                    {/* <input type="text" name="name" /> */}
                 </form>
-                <Starsky />
+                {/* <Starsky /> */}
             </div>
         );
     }
