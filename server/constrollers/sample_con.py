@@ -19,9 +19,12 @@ import os
 @check_auth
 def uploadImg():
     img = request.files['image']
-    img_name = request.form['name']
-    if len(img_name) == 0:
+    try:
+        img_name = request.form['name']
+    except KeyError:
         img_name = "未命名"
+    # if len(img_name) == 0:
+    #     img_name = "未命名"
     while(1):
         try:
             img_name = fillImgExt(img_name)
