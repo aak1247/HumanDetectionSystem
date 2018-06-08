@@ -112,6 +112,7 @@ venv.bak/
 # img
 /server/data/images
 /server/data/videos
+/server/data/INRIAPerson
 upload.jpg
 
 # media

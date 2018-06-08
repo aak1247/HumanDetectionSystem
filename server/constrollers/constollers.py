@@ -36,35 +36,35 @@ def detect():
 @allow_cross_domain
 def handle400(err):
     print(str(err))
-    rtn = dict(code = 0, message = "400 Bad Request")
+    rtn = dict(code = -1, message = "400 Bad Request")
     return jsonify(rtn), 400
 
 @app.errorhandler(404)
 @allow_cross_domain
 def handle404(err):
     print(str(err))
-    rtn = BaseRtn(code = 0, message = "404 Not Found")
+    rtn = BaseRtn(code = -1, message = "404 Not Found")
     return jsonify(rtn), 404
 
 @app.errorhandler(405)
 @allow_cross_domain
 def handle405(err):
     print(str(err))
-    rtn = BaseRtn(code = 0, message = "405 Method Not Supported")
+    rtn = BaseRtn(code = -1, message = "405 Method Not Supported")
     return jsonify(rtn), 405
 
 @app.errorhandler(500)
 @allow_cross_domain
 def handle500(err):
     print(str(err))
-    rtn = BaseRtn(code = 0, message = "500 Internal Server Error")
+    rtn = BaseRtn(code = -1, message = "500 Internal Server Error")
     return jsonify(rtn), 500
 
 @app.errorhandler(403)
 @allow_cross_domain
 def handle403(err):
     print(str(err))
-    rtn = BaseRtn(code = 0, message = "403 no access")
+    rtn = BaseRtn(code = -1, message = "403 no access")
     return jsonify(rtn), 403
 # @app.route('/detect', method=['POST'])
 # @allow_cross_domain
