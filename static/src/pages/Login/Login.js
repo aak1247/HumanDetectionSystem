@@ -34,7 +34,8 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            loginFail: false
+            passwordWrong: false,
+            userNotFound: false
         }
     }
 
@@ -54,19 +55,27 @@ class Login extends Component {
             let res = login(user)
             res.then(res => res.json())
                 .then(
-                json => {
-                    if (json.code === 0) {
-                        this.setState({
-                            loginFail: false
-                        })
-                        handleNext()
-                    }
-                    else {
-                        this.setState({
-                            loginFail: true
-                        })
-                    }
-                })
+                    json => {
+                        if (json.code === 0) {
+                            this.setState({
+                                passwordWrong: false,
+                                userNotFound: false
+                            })
+                            handleNext()
+                        }
+                        else if (json.code === -1) {
+                            this.setState({
+                                passwordWrong: true,
+                                userNotFound: false
+                            })
+                        }
+                        else {
+                            this.setState({
+                                passwordWrong: false,
+                                userNotFound: true
+                            })
+                        }
+                    })
                 .catch(e => {
                     console.log(e)
                 })
@@ -74,17 +83,35 @@ class Login extends Component {
         return (
             <div className="login">
                 <form className={classes.container} noValidate autoComplete="off">
-                    <TextField
-                        required
-                        id="username"
-                        label="用户名"
-                        className={classes.textField}
-                        value={this.state.username}
-                        onChange={this.handleChange('username')}
-                        margin="normal"
-                    />
                     {
-                        !this.state.loginFail ?
+                        !this.state.userNotFound ?
+                            <TextField
+                                required
+                                id="username"
+                                label="用户名"
+                                className={classes.textField}
+                                value={this.state.username}
+                                onChange={this.handleChange('username')}
+                                margin="normal"
+                            />
+                            :
+                            <TextField
+                                error
+                                label='用户名错误'
+                                id="username"
+                                className={classes.textField}
+                                value={this.state.username}
+                                onChange={this.handleChange('username')}
+                                margin="normal"
+                                onChange={(e) => {
+                                    this.setState({ userNotFound: false })
+                                    this.handleChange('username')
+                                }}
+                            />
+
+                    }
+                    {
+                        !this.state.passwordWrong ?
                             <TextField
                                 required
                                 id="password-input"
@@ -105,7 +132,7 @@ class Login extends Component {
                                 autoComplete="current-password"
                                 margin="normal"
                                 onChange={(e) => {
-                                    this.setState({ loginFail: false })
+                                    this.setState({ passwordWrong: false })
                                     this.handleChange('password')
                                 }}
                             />
