@@ -56,7 +56,8 @@
 .body {
   display: flex;
   justify-content: center;
-
+  align-items: center;
+  height: calc(100% -  5rem - 50px - 10rem);
 
 
 }
@@ -65,6 +66,22 @@
 
 
 
+}
+
+.left {
+  .leftlist {
+    &>div:first-child {
+      padding: 10px;
+    }
+    .MuiTypography-root-63.MuiTypography-body1-72{
+      color: gray;
+    }
+    span {
+      font-size: 2rem;
+    }
+  }
+  width: 20rem;
+  font-size: 1.5rem;
 }
 
 @keyframes App-logo-spin {

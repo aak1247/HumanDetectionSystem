@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Main.scss";
+import "./Picture.scss";
 import person from "../../images/user.jpg";
 import { upload, detect } from "../../services/network";
 // import { async } from "../../services/async_network";
@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 
 
 
-class Main extends Component {
+class Picture extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -100,4 +100,4 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default Picture;

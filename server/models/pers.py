@@ -96,7 +96,7 @@ repo_images = db.Table('repo_imgs',
 )
 
 
-class Videos(db.Model):
+class Video(db.Model):
     __tablename__ = 'videos'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.String(32), primary_key = True)

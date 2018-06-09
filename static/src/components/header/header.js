@@ -23,13 +23,13 @@ const styles = {
 };
 
 function Header(props) {
-  const { classes, logOutHandler } = props;
+  const { classes, logOutHandler, menuHandler} = props;
   return (
     <div className="header">
       <AppBar position="static">
         <Toolbar>
           <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-            <MenuIcon />
+            <MenuIcon onClick={menuHandler}/>
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.flex}>
             在线人体检测系统
