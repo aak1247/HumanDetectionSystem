@@ -24,12 +24,14 @@ class MyResponse(Response):
             headers = kwargs.get('headers')
         # 跨域控制 
         print(str(headers))
-        origin = ('Access-Control-Allow-Origin', '*')
+        origin = ('Access-Control-Allow-Origin', request.headers['Origin'])
         methods = ('Access-Control-Allow-Methods', 'HEAD, OPTIONS, GET, POST, DELETE, PUT')
+        credits = ("Access-Control-Allow-Credentials", 'true')
         if headers:
             headers.add(*origin)
             headers.add(*methods)
+            headers.add(*credits)
         else:
-            headers = Headers([origin, methods])
+            headers = Headers([origin, methods, credits])
         kwargs['headers'] = headers
         return super().__init__(response, **kwargs)

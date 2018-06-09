@@ -28,6 +28,9 @@ def login():
     password = json_obj['password']
     user = User(username, password)
     user_found = User.query.filter_by(username=username).first()
+    if(type(user_found) == type(None)):
+        rtn = BaseRtn(code = -2, message = 'user does not existed');
+        return jsonify(rtn), 200
     if(user_found.password == user.password):
         rtn = BaseRtn()
         res = jsonify(rtn)
