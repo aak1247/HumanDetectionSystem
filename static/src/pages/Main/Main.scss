@@ -1,31 +1,20 @@
 .main {
-    .img-detect {
-        width: 50rem;
-        height: 50rem;
-        padding: 5px;
-        background-color: rgb(191, 226, 180);
-        border: 3px solid;
-        border-radius: 5px;
-        position: relative;
-        cursor: pointer;
-        img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-        .closeModel {
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-        .uploadButton {
-            position: absolute;
-            bottom: 0;
-            left: calc(25rem - 44px);
-        }
-    }
+    padding-top: 25rem;
+    padding-bottom: 25rem;
+    width: 50%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around;
 
     #uploadForm {
         display: none;
+    }
+    &>div{
+        width: 40%;
+        min-width: 30rem;
+        // display: flex;
+        margin: 100px;
     }
 
     .gravity,

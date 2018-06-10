@@ -1,4 +1,10 @@
 .model{
     width: 60rem;
     font-size: 2rem;
+    &>div{
+        padding: 20px;
+        button {
+            margin: 10px;
+        }
+    }
 }

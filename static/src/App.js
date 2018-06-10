@@ -9,6 +9,7 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import FontAwesome from 'react-fontawesome';
 import Header from './components/header/header';
+import Main from './pages/Main/Main';
 import Left from './components/left/left';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -191,7 +192,7 @@ class App extends Component {
             //主页
             switch (this.state.current) {
               case 0:
-                return <Picture />
+                return <Main />
               case 1:
                 return <Picture />
               case 2:

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./Picture.scss";
-import person from "../../images/user.jpg";
+import person from "../../images/person.png";
 import { upload, detect } from "../../services/network";
 // import { async } from "../../services/async_network";
 import Gravity from '../../components/gravity/gravity';
@@ -53,14 +53,16 @@ class Picture extends Component {
         //drawer切换
 
         return (
-            <div className="main">
+            <div className="picture">
                 <div className="img-detect" onClick={this.detectFaces}>
                     {
                         this.state.detected ?
                             <img src={this.state.img} className='detect-img' />
                             : <img src={person} className='detect-img' />
                     }
-                    <Button 
+                    <div>
+                    </div>
+                    <Button
                         variant="contained"
                         color="primary"
                         className='uploadButton'
