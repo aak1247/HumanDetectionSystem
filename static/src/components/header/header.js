@@ -23,7 +23,7 @@ const styles = {
 };
 
 function Header(props) {
-  const { classes, logOutHandler, menuHandler} = props;
+  const { classes, logOutHandler, menuHandler, hasLogin} = props;
   return (
     <div className="header">
       <AppBar position="static">
@@ -34,7 +34,10 @@ function Header(props) {
           <Typography variant="title" color="inherit" className={classes.flex}>
             在线人体检测系统
           </Typography>
-          <Button color="inherit" onClick={logOutHandler}>登出</Button>
+          {
+            hasLogin?<Button color="inherit" onClick={logOutHandler}>登出</Button>
+            :<i></i>
+          }
         </Toolbar>
       </AppBar>
     </div>

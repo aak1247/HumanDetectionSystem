@@ -171,7 +171,8 @@ class App extends Component {
       <div className="all">
         <Header
           logOutHandler={this.logOutHandler}
-          menuHandler={this.triggerSlide} />
+          menuHandler={this.triggerSlide} 
+          hasLogin={this.state.hasLogin}/>
         <div className="body">
           {(() => {
             if (!this.state.hasLogin && this.state.registering) {
